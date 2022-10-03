@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: 96b8bada93a1042459a555e84f492d24
+  - enabled: 1
+    path: Assets/Scenes/Dormitory.unity
+    guid: d94a6e92068a1324ba6e87c2f4e61f89
+  - enabled: 1
+    path: Assets/Scenes/MainGame.unity
+    guid: 4722f6936ea73184cb21d13a6c11f810
+  - enabled: 1
+    path: Assets/Scenes/MiniGame/Viking.unity
+    guid: d5f29cf4dd53dcf4a8bfe04624d23d5b
+  - enabled: 1
+    path: Assets/Scenes/MiniGame/FlumRide.unity
+    guid: 7f79f38eec534ae47a1bceddaf76431f
+  - enabled: 1
+    path: Assets/Scenes/MiniGame/Safari.unity
+    guid: 612457b8b80418e4c960c52e7fb33ef3
+  - enabled: 1
+    path: Assets/Scenes/MiniGame/RollerCoaster.unity
+    guid: b5525feb02f9db74b80d7c939ec383b9
+  - enabled: 1
+    path: Assets/Scenes/MiniGame/Restaurant.unity
+    guid: d265796e828b16b46a67dd9ce006e936
+  m_configObjects: {}
