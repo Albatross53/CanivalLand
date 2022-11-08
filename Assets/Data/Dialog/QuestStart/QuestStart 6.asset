@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e97050840dfd3b7439426da9940eda50, type: 3}
+  m_Name: QuestStart 6
+  m_EditorClassIdentifier: 
+  Sentence:
+  - "\uBE5A\uC7C1\uC774\uB4E4\uC774 \uC774\uBC88\uC5D4 \uC6B0\uB9AC\uC9D1\uC5D0 \uCC3E\uC544\uC654\uC5B4."
+  - "\uACB0\uAD6D \uC0AC\uC7A5\uB2D8\uC744 \uCC3E\uB294\uAC74 \uD3EC\uAE30\uD55C\uAC83
+    \uAC19\uC544."
+  - "\uC5B4\uB5BB\uAC8C\uD558\uBA74 \uC774 \uB180\uC774\uACF5\uC6D0\uC744 \uCC98\uBD84\uD560\uC9C0\uB9CC
+    \uC0DD\uAC01\uD558\uACE0 \uC788\uC5B4."
+  - "\uACE7 \uB108\uD55C\uD14C\uB3C4 \uCC3E\uC544\uC62C\uC9C0 \uBAB0\uB77C."
+  - "\uD798\uB4E4\uACA0\uC9C0\uB9CC \uBE5B\uC744 \uB354 \uBE68\uB9AC \uAC1A\uC544\uC57C\uD560\uAC83
+    \uAC19\uC544."

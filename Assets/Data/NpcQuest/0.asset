@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc5cebb18e0a85540a7cc37130a23c3a, type: 3}
+  m_Name: 0
+  m_EditorClassIdentifier: 
+  questNpcCode: 1
+  npcQuestOrder: "\uD1A0\uB07C"
+  npcQuestName: "\uB3CC\uC544\uC628\uAC78 \uD658\uACBD\uD55C\uB2E4"
+  npcQuestDisc: "\uC624\uB7AB\uB9CC\uC5D0 \uB3CC\uC544\uC654\uB354\uB2C8 \uBC14\uB010
+    \uC0AC\uB78C\uB4E4\uC774 \uC788\uB2E4, \uC544\uB2C8 \uD1A0\uB07C \uBE7C\uACE0\uB294
+    \uBAA8\uB450 \uBAA8\uB974\uB294 \uC0AC\uB78C\uC774\uB2E4. \uC778\uC0AC\uB97C
+    \uD574\uBCF4\uC790."
+  questType: 4
+  questMaxNum: 5
+  questReward: 10

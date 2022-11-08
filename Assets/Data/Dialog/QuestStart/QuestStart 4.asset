@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e97050840dfd3b7439426da9940eda50, type: 3}
+  m_Name: QuestStart 4
+  m_EditorClassIdentifier: 
+  Sentence:
+  - "\uB3C8\uC744 \uBC8C\uB824\uBA74 \uB180\uC774\uAE30\uAD6C\uBFD0\uC774\uC57C."
+  - "\uC6B0\uB9B0\uC774\uC81C \uC815\uB9D0 \uAE09\uD574."
+  - "\uB180\uC774\uAE30\uAD6C\uB97C \uC6B4\uD589\uD558\uC790 \uCD5C\uB300\uD55C \uB9CE\uC774."
