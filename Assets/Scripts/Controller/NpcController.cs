@@ -58,6 +58,8 @@ public class NpcController : MonoBehaviour
         if (m_IsContact)
         {
             mark.SetActive(true);
+            if (!GameManager.Instance.m_optionOpen)
+            {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
             if (Input.GetMouseButtonDown(0))
             {
@@ -80,15 +82,20 @@ public class NpcController : MonoBehaviour
                 Touch touch = Input.GetTouch(0);
                 Ray ray = Camera.main.ScreenPointToRay(touch.position);
                 RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
-                if (hit.collider == gameObject)
+                if (hit.collider != null)
                 {
-                    DialogueManager.Instance.DialogueStart(npcData.NpcCode, npcData.NpcName, m_Friendship, npcData.NpcSprite);
-                    QuestManager.Instance.NpcQuestCheck(4, 1);
+                    if (hit.collider.name == gameObject.name || hit.collider.name == "Player")
+                    {
+                        if (!DialogueManager.Instance.isDial)
+                        {
+                            DialogueManager.Instance.DialogueStart(npcData.NpcCode, npcData.NpcName, m_Friendship, npcData.NpcPortrait);
+                        }
+                    }
                 }
 
             }
 #endif
-
+        }
         }
         else
         {

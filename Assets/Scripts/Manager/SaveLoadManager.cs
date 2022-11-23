@@ -11,10 +11,9 @@ public class SaveLoadManager : MonoBehaviour
     public float m_Reputation = 0;
     public int m_Date = 0;
     public int m_Gold = 0;
-    public int m_Debt = 100000000;
+    public int m_Debt = 50000;
     public int m_NpcQuestNum = 0;
     public float m_ParkReputation = 0;
-    public List<bool> m_LuckCardOpen = new List<bool>();
     public List<float> m_AttractionPreferenceList = new List<float>();
     public List<float> m_NpcFriendshipList = new List<float>();
     public List<bool> m_NpcfirstTalkList = new List<bool>();
@@ -26,6 +25,7 @@ public class SaveLoadManager : MonoBehaviour
     PlayerData _playerData;
 
     string filePath;
+    string resetPath;
 
     public List<string> fileName;
 
@@ -36,6 +36,7 @@ public class SaveLoadManager : MonoBehaviour
     private void Awake()
     {
         filePath = Application.persistentDataPath + "/PlayerData";
+        resetPath = Application.persistentDataPath + "/PlayerData_ResetData";
 
         if (Instance == null)
         {
@@ -45,6 +46,17 @@ public class SaveLoadManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+
+        CreatResetFile();
+    }
+
+    void CreatResetFile()
+    {
+        if (!File.Exists(resetPath))
+        {
+            Save(resetPath);
+            return;
         }
     }
 
@@ -61,7 +73,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         if (!File.Exists(argPath))
         {
-            //reset
+            SaveReset();
             Save(argPath);
             return;
         }
@@ -77,7 +89,32 @@ public class SaveLoadManager : MonoBehaviour
         m_NpcQuestNum = _playerData.npcQuestNum;
         m_ParkReputation = _playerData.parkReputation;
         
-        m_LuckCardOpen = new List<bool>(_playerData.LuckCardOpen);
+        m_AttractionPreferenceList = new List<float>(_playerData.AttractionPreferenceList);
+        m_NpcFriendshipList = new List<float>(_playerData.NpcFriendshipList);
+        m_NpcfirstTalkList = new List<bool>(_playerData.NpcfirstTalkList);
+
+        m_NpcQuestIsStart = new List<bool>(_playerData.NpcQuestIsStart);
+        m_NpcQuestIsClear = new List<bool>(_playerData.NpcQuestIsClear);
+        m_NpcQuestCurNum = _playerData.npcQuestCurNum;
+    }
+
+    /// <summary>
+    /// 저장데이터 리셋
+    /// </summary>
+    void SaveReset()
+    {
+        string jdata = File.ReadAllText(resetPath);
+        _playerData = JsonUtility.FromJson<PlayerData>(jdata);
+
+        m_IsFirst = _playerData.isFirst;
+        m_PlayerName = _playerData.playerName;
+        m_Reputation = _playerData.reputation;
+        m_Date = _playerData.date;
+        m_Gold = _playerData.gold;
+        m_Debt = _playerData.debt;
+        m_NpcQuestNum = _playerData.npcQuestNum;
+        m_ParkReputation = _playerData.parkReputation;
+
         m_AttractionPreferenceList = new List<float>(_playerData.AttractionPreferenceList);
         m_NpcFriendshipList = new List<float>(_playerData.NpcFriendshipList);
         m_NpcfirstTalkList = new List<bool>(_playerData.NpcfirstTalkList);
@@ -94,7 +131,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         _playerData = new PlayerData(m_IsFirst, m_PlayerName, m_Reputation, 
             m_Date, m_Gold, m_Debt, m_NpcQuestNum, m_ParkReputation,
-            m_LuckCardOpen, m_AttractionPreferenceList,
+            m_AttractionPreferenceList,
             m_NpcFriendshipList, m_NpcfirstTalkList, m_NpcQuestIsStart, m_NpcQuestIsClear, m_NpcQuestCurNum);
         string jdata = JsonUtility.ToJson(_playerData);
         File.WriteAllText(argPath, jdata);
@@ -118,7 +155,6 @@ public class PlayerData
     public int debt;
     public int npcQuestNum;
     public float parkReputation;
-    public List<bool> LuckCardOpen = new List<bool>();
     public List<float> AttractionPreferenceList = new List<float>();
     public List<float> NpcFriendshipList = new List<float>();
     public List<bool> NpcfirstTalkList = new List<bool>();
@@ -129,7 +165,7 @@ public class PlayerData
 
     public PlayerData(bool isFirst, string playerName, float reputation, 
         int date, int gold, int debt, int npcQuestNum, float parkReputation, 
-        List<bool> luckCardOpen, List<float> attractionPreferenceList, 
+        List<float> attractionPreferenceList, 
         List<float> npcFriendshipList, List<bool> npcfirstTalkList, List<bool> npcQuestIsStart, 
         List<bool> npcQuestIsClear, int npcQuestCurNum)
     {
@@ -141,7 +177,6 @@ public class PlayerData
         this.debt = debt;
         this.npcQuestNum = npcQuestNum;
         this.parkReputation = parkReputation;
-        LuckCardOpen = luckCardOpen ?? throw new ArgumentNullException(nameof(luckCardOpen));
         AttractionPreferenceList = attractionPreferenceList ?? throw new ArgumentNullException(nameof(attractionPreferenceList));
         NpcFriendshipList = npcFriendshipList ?? throw new ArgumentNullException(nameof(npcFriendshipList));
         NpcfirstTalkList = npcfirstTalkList ?? throw new ArgumentNullException(nameof(npcfirstTalkList));

@@ -142,7 +142,7 @@ public class CustomerObject : MonoBehaviour
 
         int move = Random.Range(0, 2);
 
-        while (true) yield return StartCoroutine(State[1]);
+        while (true) yield return StartCoroutine(State[move]);
     }
 
     IEnumerator Idle()

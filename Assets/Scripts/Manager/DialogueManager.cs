@@ -35,6 +35,18 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (dialoguePanel.activeSelf == true)
+        {
+            GameManager.Instance.m_optionOpen = true;
+        }
+        else if (dialoguePanel.activeSelf == false)
+        {
+            GameManager.Instance.m_optionOpen = false;
+        }
+    }
+
     /// <summary>
     /// 대화 시작
     /// </summary>

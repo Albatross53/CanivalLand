@@ -91,6 +91,7 @@ public class DormitoryManager : MonoBehaviour
 
     public void NextDay()
     {
+        GameValueManager.Instance.IsDate += 1;
         SoundManager.Instance.PlayEffectSound(nextClip);
 
         GameValueManager.Instance.ValueSave();

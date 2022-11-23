@@ -9,7 +9,7 @@ public class TimeManager : MonoBehaviour
     /// <summary>
     /// 인게임 하루
     /// </summary>
-    public float MaxDayTime = 5.0f;
+    public float MaxDayTime = 6.0f;
 
     /// <summary>
     /// 분

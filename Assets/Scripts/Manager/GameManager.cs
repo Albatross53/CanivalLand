@@ -50,7 +50,6 @@ public class GameManager : MonoBehaviour
 
             GameValueManager.Instance.ValueLoad();
             QuestManager.Instance.QuestLoad();
-            LuckcardManager.Instance.LuckcardOpenLoad();
             ParkReputationManager.Instance.ReputationLoad();
             AttractionPreferenceManager.Instance.PreferenceLoad();
             GameValueManager.Instance.IsWorkimg = 0;
@@ -95,17 +94,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void WorkEnd()
     {
-        GameValueManager.Instance.IsDate += 1;
 
         GameValueManager.Instance.ValueSave();
         QuestManager.Instance.QuestSave();
-        LuckcardManager.Instance.LuckcardOpenSave();
         ParkReputationManager.Instance.ReputationSave();
         AttractionPreferenceManager.Instance.PreferenceSave();
         NPCManager.Instance.NPCFriendshipSave();
-
-        string filePath = Application.persistentDataPath + "/PlayerData";
-        SaveLoadManager.Instance.Save(filePath + SaveLoadManager.Instance.fileName[SaveLoadManager.Instance.fileSlotNum]);
 
         SceneController.Instance.LoadScene("Dormitory");
     }
@@ -132,17 +126,6 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0;
         PlayerController.Instance.IsStop = true;
-        yield return 0;
-    }
-
-    IEnumerator cut()
-    {
-        PlayerController.Instance.IsStop = true;
-        yield return 0;
-    }
-
-    IEnumerator dorm()
-    {
         yield return 0;
     }
 

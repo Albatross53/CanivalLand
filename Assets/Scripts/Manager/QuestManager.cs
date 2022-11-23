@@ -106,7 +106,7 @@ public class QuestManager : MonoBehaviour
         }
     }
 
-    [ContextMenu("QuestSave")]
+
     public void QuestSave()
     {
         SaveLoadManager.Instance.m_NpcQuestNum = NpcQuestNum;

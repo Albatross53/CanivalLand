@@ -1774,7 +1774,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -3287,6 +3287,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  bonus: 0
 --- !u!4 &1441534996
 Transform:
   m_ObjectHideFlags: 0
@@ -3611,7 +3612,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 308421492d9306241bd9d086b982b0bc, type: 2}
   - {fileID: 11400000, guid: 467abe8709d9ae54bb278e168f96f77a, type: 2}
   - {fileID: 11400000, guid: 3ba79daebcfbeda409f39b72d4d7a1f5, type: 2}
-  m_luckCardOpens: 000000000000000000000000000000
   todayCardNum: 0
   todayCardSprite: {fileID: 0}
 --- !u!4 &1543798492
@@ -4750,10 +4750,9 @@ MonoBehaviour:
   m_Reputation: 0
   m_Date: 1
   m_Gold: 0
-  m_Debt: 100000000
+  m_Debt: 50000
   m_NpcQuestNum: 0
   m_ParkReputation: 0
-  m_LuckCardOpen: 000000000000000000000000000000000000000000
   m_AttractionPreferenceList:
   - 0
   - 0
@@ -4767,8 +4766,8 @@ MonoBehaviour:
   - 0
   - 0
   m_NpcfirstTalkList: 0000000000
-  m_NpcQuestIsStart: 0000000000000000000000000000000000000000
-  m_NpcQuestIsClear: 0000000000000000000000000000000000000000
+  m_NpcQuestIsStart: 0000000000000000000000000000
+  m_NpcQuestIsClear: 0000000000000000000000000000
   m_NpcQuestCurNum: 0
   fileName:
   - 0

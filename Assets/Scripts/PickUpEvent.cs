@@ -27,16 +27,39 @@ public class PickUpEvent : MonoBehaviour
 
         if (m_IsContact)
         {
-            if(PlayerController.Instance.isEvent == false)
+            if (!GameManager.Instance.m_optionOpen)
             {
-                mark.SetActive(true);
-            }
+                if (PlayerController.Instance.isEvent == false)
+                {
+                    mark.SetActive(true);
+                }
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
+                    if (hit.collider != null)
+                    {
+                        if (hit.collider.name == gameObject.name || hit.collider.name == "Player")
+                        {
+                            if (PlayerController.Instance.isEvent == false)
+                            {
+                                PickUp();
+                            }
+
+                        }
+                    }
+
+                }
+#else
+
+            if (Input.touchCount > 0)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Touch touch = Input.GetTouch(0);
+                Ray ray = Camera.main.ScreenPointToRay(touch.position);
                 RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
+
                 if (hit.collider != null)
                 {
                     if (hit.collider.name == gameObject.name || hit.collider.name == "Player")
@@ -50,38 +73,14 @@ public class PickUpEvent : MonoBehaviour
                 }
 
             }
-
-#else
-            if (Input.touchCount > 0)
-            {
-                Touch touch = Input.GetTouch(0);
-                Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
-
-                if (hit.collider != null)
-                {
-                    if (EventType == 0)
-                    {
-                        PickUp();
-                    }
-                    else if (EventType == 1)
-                    {
-                        if (PlayerController.Instance.m_PickCode == EventCode)
-                        {
-                            PickDown();
-                            //flag 이벤트처리
-                        }
-                    }
-                }
-
-            }
 #endif
 
-        }
-        else
-        {
-            mark.SetActive(false);
-            return;
+            }
+            else
+            {
+                mark.SetActive(false);
+                return;
+            }
         }
     }
 

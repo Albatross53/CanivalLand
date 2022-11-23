@@ -323,8 +323,14 @@ public class UIManager : MonoBehaviour
         }
         else if (argNum == 6) // 게임설정
         {
-
+            ADManager.Instance.AdLoad();
         }
+    }
+
+    public void disOption()
+    {
+        SetOption(0);
+        OptionUI.SetActive(false);
     }
 
     /// <summary>
