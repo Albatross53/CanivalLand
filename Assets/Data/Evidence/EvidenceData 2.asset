@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc77f0b4217e22540ae75b74dd9ee1a2, type: 3}
+  m_Name: EvidenceData 2
+  m_EditorClassIdentifier: 
+  evidenceCode: 2
+  evidenceDisc: "\uBAA8\uC6D4 \uBAA8\uC77C / \uC81C\uC0AC\uD558\uB294 \uBC29\uBC95\uC5D0
+    \uB300\uD574 \uC54C\uC544 \uC654\uB2E4. \uC774\uAC83\uB9CC \uC131\uACF5\uD55C\uB2E4\uBA74
+    \uC6B4\uC601\uB09C\uC5D0\uC11C \uD574\uBC29\uB420 \uC218 \uC788\uB2E4. \uC81C\uC0AC
+    \uC900\uBE44\uC640 \uC5EC\uB7EC \uAC00\uC9C0 \uBE44\uC6A9\uC774 \uAF64 \uB9CE\uC774
+    \uB4E4\uC5B4 \uC0AC\uCC44\uC5C5\uC790\uC5D0\uAC8C \uB3C4\uC6C0\uC744 \uBC1B\uC558\uB2E4.
+    \uAC71\uC815\uB418\uAE34 \uD558\uC9C0\uB9CC \uC6B4\uCE74\uB4DC\uB9CC \uC131\uACF5\uD55C\uB2E4\uBA74
+    \uBB38\uC81C \uB418\uC9C0 \uC54A\uC744 \uAC83\uC774\uB2E4."

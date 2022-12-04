@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
             QuestManager.Instance.QuestLoad();
             ParkReputationManager.Instance.ReputationLoad();
             AttractionPreferenceManager.Instance.PreferenceLoad();
+            EvidenceManager.Instance.EvidenceLoad();
             GameValueManager.Instance.IsWorkimg = 0;
 
             QuestManager.Instance.NpcQuestCheck(3, 1);
@@ -65,7 +66,6 @@ public class GameManager : MonoBehaviour
             PlayerController.Instance.PlayerPosLoad();
 
             TimeManager.Instance.IsMin++;
-            SceneController.Instance.FindObj();
             ChangeState(GameState.idle);
             AttractionPreferenceManager.Instance.PreferenceEffect(GameValueManager.Instance.IsWorkimg - 1);
             QuestManager.Instance.QuestCheck(GameValueManager.Instance.IsWorkimg);
@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour
         ParkReputationManager.Instance.ReputationSave();
         AttractionPreferenceManager.Instance.PreferenceSave();
         NPCManager.Instance.NPCFriendshipSave();
+        EvidenceManager.Instance.EvidenceSave();
 
         SceneController.Instance.LoadScene("Dormitory");
     }

@@ -25,8 +25,8 @@ public class Dormitory : MonoBehaviour
                 {
                     if (hit.collider.name == gameObject.name || hit.collider.name == "Player")
                     {
-                        SoundManager.Instance.PlayEffectSound(moveClip);
                         GameManager.Instance.WorkEnd();
+                        SoundManager.Instance.PlayEffectSound(moveClip);
                     }
                 }
 

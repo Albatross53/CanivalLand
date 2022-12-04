@@ -4,8 +4,32 @@ using UnityEngine;
 
 public class Mouse : MonoBehaviour
 {
-    [SerializeField] int mouseCode;
+    bool isMouseOpen = false;
     [SerializeField] Animator ani;
+
+
+    public void gen()
+    {
+        gameObject.SetActive(true);
+        isMouseOpen= true;
+        StartCoroutine("Life");
+    }
+
+    IEnumerator Life()
+    {
+        yield return new WaitForSeconds(5);
+
+        if (isMouseOpen)
+        {
+            isMouseOpen= false;
+            gameObject.SetActive(false);
+            RestaurantManager.Instance.MissRat();
+        }
+        else
+        {
+            StopCoroutine("Life");
+        }
+    }
 
     void Update()
     {
@@ -16,24 +40,28 @@ public class Mouse : MonoBehaviour
             RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
             if (hit.collider != null)
             {
-                RestaurantManager.Instance.CatchRat(mouseCode);
                 ani.SetTrigger("die");
+                RestaurantManager.Instance.CatchRat();
+                StopCoroutine("Life");
+                gameObject.SetActive(false);
             }
         }
 #else
-            if (Input.touchCount > 0)
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            Ray ray = Camera.main.ScreenPointToRay(touch.position);
+            RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
+            if (hit.collider != null)
             {
-                Touch touch = Input.GetTouch(0);
-                Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
-                if (hit.collider == gameObject)
-                {
-                    gameObject.SetActive(false);
-                }
-
+                ani.SetTrigger("die");
+                RestaurantManager.Instance.CatchRat();
+                StopCoroutine("Life");
+                gameObject.SetActive(false);
             }
-#endif
 
+        }
+#endif
     }
-        
+
 }

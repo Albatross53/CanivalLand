@@ -32,8 +32,8 @@ public class DormitoryManager : MonoBehaviour
     {
         SoundManager.Instance.PlayBackSound(dormBack);
 
-        filePath = Application.persistentDataPath + "/PlayerData";
-        SaveLoadManager.Instance.Load(filePath + SaveLoadManager.Instance.fileName[SaveLoadManager.Instance.fileSlotNum]);
+        filePath = SaveLoadManager.Instance.filePath;
+        SaveLoadManager.Instance.Save(filePath + SaveLoadManager.Instance.fileName[SaveLoadManager.Instance.fileSlotNum]);
 
         SceneController.Instance.FindObj();
 

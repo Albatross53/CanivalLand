@@ -55,15 +55,14 @@ public class Bus : MonoBehaviour
     {
         if(collision.gameObject.tag == "Animal")
         {
-            SafariManager.Instance.addScore(-10);
+            SafariManager.Instance.addScore(-20);
             SoundManager.Instance.PlayEffectSound(badSE);
             SafariManager.Instance.GetReaction(false);
             StartCoroutine("blink");
         }else if (collision.gameObject.tag == "Bus")
         {
-            SafariManager.Instance.addScore(10);
+            SafariManager.Instance.addScore(20);
             SoundManager.Instance.PlayEffectSound(goodSE);
-            SafariManager.Instance.goodNum++;
             SafariManager.Instance.GetReaction(true);
         }
     }

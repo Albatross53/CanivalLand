@@ -14,9 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardCode: 0
   cardName: "\uB450\uBC30\uB85C\uB450\uBC30\uB85C"
-  cardDisc: "\uC624\uB298\uC740 \uBAA8\uB4E0\uAC83\uC774 \uB450\uBC30"
+  cardDisc: "\uC624\uB298\uC740 \uACE8\uB4DC\uD68D\uB4DD\uC774 \uB450\uBC30\uC785\uB2C8\uB2E4!"
   CardSprite: {fileID: -4080197097382666215, guid: 36f36b34adfe26b49a8654737bf54daf, type: 3}
-  PlayerAnimation: {fileID: 0}
-  CustumerAnimation: {fileID: 0}
   scoreAffecting: 2
   spawnEvent: 0

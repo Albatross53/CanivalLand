@@ -146,31 +146,58 @@ public class QuestManager : MonoBehaviour
     {
         SoundManager.Instance.PlayEffectSound(dayQuestClear);
 
-        if (m_todayQuestNum.Contains(argNum))
+        if (m_todayQuestNum.Contains(argNum)) //¿œ¿œƒ˘Ω∫∆Æ
         {
             int questIndex = m_todayQuestNum.IndexOf(argNum);
-            if(m_DayQuestisClear[m_todayQuestNum[questIndex]] == false)
+            if (m_DayQuestisClear[m_todayQuestNum[questIndex]] == false) //πÃøœ∑· ¿œ¿œƒ˘Ω∫∆Æ
             {
                 m_DayQuestisClear[m_todayQuestNum[questIndex]] = true;
-                GameValueManager.Instance.IsGold += 
-                    (m_questData[questIndex].QuestReward + 50 + (AttractionPreferenceManager.Instance.bonus * 10))
-                    * LuckcardManager.Instance.m_luckCardDatas[LuckcardManager.Instance.todayCardNum].ScoreAffecting;
+                int addDayQuestGold = m_questData[questIndex].QuestReward * LuckcardManager.Instance.todayAffectingNum;
+                GameValueManager.Instance.IsGold += addDayQuestGold;
+                UIManager.Instance.FadeText("¿œ¿œƒ˘Ω∫∆Æ " + addDayQuestGold.ToString() + " ∞ÒµÂ »πµÊ");
+
+                StartCoroutine("nomalReward", argNum);
+
             }
-            else
+            else //øœ∑· ¿œ¿œƒ˘Ω∫∆Æ
             {
-                GameValueManager.Instance.IsGold += 
-                    (50 + (AttractionPreferenceManager.Instance.bonus * 10)) * LuckcardManager.Instance.m_luckCardDatas[LuckcardManager.Instance.todayCardNum].ScoreAffecting;
+                StartCoroutine("nomalReward", argNum);
             }
         }
-        else if(argNum != 0)
+        else if(argNum != 0) //¿œ¿œƒ˘Ω∫∆Æ æ∆¥‘
         {
-            GameValueManager.Instance.IsGold += 
-                (50 * LuckcardManager.Instance.m_luckCardDatas[LuckcardManager.Instance.todayCardNum].ScoreAffecting);
-            //ƒ˘Ω∫∆Æ∞° æ∆¥— πÃ¥œ∞‘¿”≈¨∏ÆæÓ
+            StartCoroutine("nomalReward", argNum);
         }
         else
         {
             return;
+        }
+
+        GameValueManager.Instance.IsAttractionPosCode = 0;
+    }
+
+    IEnumerator nomalReward(int argNum)
+    {
+        yield return new WaitForSeconds(1f);
+        if (argNum < 6)
+        {
+            int addRewardGold = miniGameReward;
+            GameValueManager.Instance.IsGold += miniGameReward;
+            UIManager.Instance.FadeText("πÃ¥œ∞‘¿” ∫∏ªÛ " + miniGameReward.ToString() + " ∞ÒµÂ »πµÊ");
+        }
+        else
+        {
+            int addDayQuestGold = 10 * LuckcardManager.Instance.todayAffectingNum;
+            GameValueManager.Instance.IsGold += addDayQuestGold;
+            UIManager.Instance.FadeText("µππﬂ¿Ã∫•∆Æ " + addDayQuestGold.ToString() + " ∞ÒµÂ »πµÊ");
+        }
+    }
+
+    public int miniGameReward
+    {
+        get
+        {
+            return GameValueManager.Instance.IsMiniGameScore + (AttractionPreferenceManager.Instance.bonus * 10);
         }
     }
 

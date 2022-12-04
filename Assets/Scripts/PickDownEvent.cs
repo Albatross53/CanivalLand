@@ -5,6 +5,8 @@ using UnityEngine;
 public class PickDownEvent : MonoBehaviour
 {
     [SerializeField] GameObject mark;
+    [SerializeField] bool transh = false;
+    [SerializeField] bool can = false;
 
     /// <summary>
     /// 플레이어 레이어마스크
@@ -20,7 +22,19 @@ public class PickDownEvent : MonoBehaviour
     {
         m_IsContact = Physics2D.OverlapCircle(transform.position, 0.7f, Player);
 
-        if (m_IsContact)
+        if (transh)
+        {
+            if(PlayerController.Instance.m_PickCode == 2)
+            {
+                can= true;
+            }
+        }
+        else
+        {
+            can= true;
+        }
+
+        if (m_IsContact && can)
         {
             if (!GameManager.Instance.m_optionOpen)
             {
@@ -40,44 +54,55 @@ public class PickDownEvent : MonoBehaviour
                         {
                             if (PlayerController.Instance.isEvent == true)
                             {
-
-                                PickDown();
+                                if(PlayerController.Instance.m_PickCode == 3)
+                                {
+                                    UIManager.Instance.PickDown_Luck();
+                                }
+                                else
+                                {
+                                    PickDown();
+                                }
                             }
 
                         }
                     }
 
                 }
-
 #else
-            if (Input.touchCount > 0)
-            {
-                Touch touch = Input.GetTouch(0);
-                Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
-
-                if (hit.collider != null)
+                if (Input.touchCount > 0)
                 {
-                    if (hit.collider.name == gameObject.name || hit.collider.name == "Player")
+                    Touch touch = Input.GetTouch(0);
+                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                    RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
+
+                    if (hit.collider != null)
                     {
-                        if (PlayerController.Instance.isEvent == true)
+                        if (hit.collider.name == gameObject.name || hit.collider.name == "Player")
                         {
+                            if (PlayerController.Instance.isEvent == true)
+                            {
+                            if(PlayerController.Instance.m_PickCode == 3)
+                                {
+                                    UIManager.Instance.PickDown_Luck();
+                                }
+                                else
+                                {
+                                    PickDown();
+                                }
+                            }
 
-                            PickDown();
                         }
-
                     }
-                }
 
-            }
+                }
 #endif
 
             }
-            else
-            {
-                mark.SetActive(false);
-                return;
-            }
+        }
+        else
+        {
+            mark.SetActive(false);
+            return;
         }
     }
 

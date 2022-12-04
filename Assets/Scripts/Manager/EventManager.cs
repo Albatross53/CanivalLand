@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
-    public int eventGenMaxNum = 2;
+    public int eventGenMaxNum = 5;
 
     /// <summary>
     /// 0. 미아, 1. 분실물, 2. 쓰레기
@@ -58,13 +58,25 @@ public class EventManager : MonoBehaviour
     {
         if (!isEvent)
         {
-        int eventGen = Random.Range(0, 10);
-        if(eventGen < eventGenMaxNum)
-        {
-            isEvent = true;
-            int ran = Random.Range(0, m_eventObj.Length);
-            EvenetStart(ran);
-        }
+            int eventGen = Random.Range(0, 10);
+            if (eventGen < eventGenMaxNum)
+            {
+                isEvent = true;
+                int ran = Random.Range(0, m_eventObj.Length);
+                if (ran == 0)
+                {
+                    UIManager.Instance.FadeText("미아가 발생했습니다");
+                }
+                else if (ran == 1)
+                {
+                    UIManager.Instance.FadeText("분실물이 발생했습니다");
+                }
+                else if (ran == 2)
+                {
+                    UIManager.Instance.FadeText("쓰레기가 발생했습니다");
+                }
+                EvenetStart(ran);
+            }
         }
     }
 

@@ -101,24 +101,23 @@ public class Viking : MonoBehaviour
     {
         if (speed > 0)
         {
-            speed = -(Mathf.Abs(speed) + 10);
+            speed = -(Mathf.Abs(speed) + 3);
         }
         else
         {
-            speed = (Mathf.Abs(speed) + 10);
+            speed = (Mathf.Abs(speed) + 3);
         }
 
         VikingManager.Instance.GetReaction(dir);
 
         if(dir == true)
         {
-            VikingManager.Instance.AddScore(10);
+            VikingManager.Instance.AddScore(20);
             SoundManager.Instance.PlayEffectSound(goodSE);
-            VikingManager.Instance.goodNum++;
         }
         else
         {
-            VikingManager.Instance.AddScore(-10);
+            VikingManager.Instance.AddScore(-20);
             SoundManager.Instance.PlayEffectSound(badSE);
         }
     }

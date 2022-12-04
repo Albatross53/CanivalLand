@@ -12,10 +12,8 @@ public class RestaurantManager : MonoBehaviour
     float RestaurantScore = 0;
     float time = 60.0f;
     float genTime = 1;
-    [HideInInspector] public int goodNum = 0;
 
-    [SerializeField] GameObject[] mouse;
-    [SerializeField] bool[] mouseOpen;
+    [SerializeField] Mouse[] mouse;
 
     [Header("UI")]
     [SerializeField] Text goodText;
@@ -25,10 +23,13 @@ public class RestaurantManager : MonoBehaviour
 
     [Header("Result")]
     [SerializeField] GameObject Result;
-    [SerializeField] GameObject[] ResultScoreImage;
+    [SerializeField] Text scoreText;
+    [SerializeField] Text cardText;
+    [SerializeField] Text rewardText;
 
     [Header("Reaction")]
-    [SerializeField] GameObject reaction;
+    [SerializeField] GameObject reactionPrefab;
+    [SerializeField] Transform reactionPos;
     [SerializeField] Sprite reactionGood;
     [SerializeField] Sprite reactionBad;
     [SerializeField] Image reactionBar;
@@ -56,18 +57,16 @@ public class RestaurantManager : MonoBehaviour
     private void Start()
     {
         SoundManager.Instance.PlayBackSound(restaurantBack);
-
         SceneController.Instance.FindObj();
-        goodNum = 0;
         GameStartPanel.SetActive(true);
-        reaction.SetActive(false);
+        Result.SetActive(false);
         StartCoroutine("GameStart");
     }
 
     private void Update()
     {
         timerText.text = time.ToString("00");
-        reactionBar.fillAmount = RestaurantScore / 300;
+        reactionBar.fillAmount = RestaurantScore / 400;
 
         if (0 >= time)
         {
@@ -101,46 +100,34 @@ public class RestaurantManager : MonoBehaviour
 
     void GetResult()
     {
-        goodText.text = "X " + goodNum.ToString();
-        if (RestaurantScore <= 50)
-        {
-            ResultScoreImage[0].SetActive(false);
-            ResultScoreImage[1].SetActive(false);
-            ResultScoreImage[2].SetActive(false);
-        }
-        else if (RestaurantScore <= 100)
-        {
-            ResultScoreImage[1].SetActive(false);
-            ResultScoreImage[2].SetActive(false);
-        }
-        else if (RestaurantScore <= 200)
-        {
-            ResultScoreImage[2].SetActive(false);
-        }
-        else
-        {
-            return;
-        }
+        scoreText.text = "점수: " + Mathf.RoundToInt(RestaurantScore).ToString();
+        cardText.text = "카드 영향 : x" +
+            LuckcardManager.Instance.todayAffectingNum.ToString();
+        rewardText.text = "획득골드 : " +
+            (Mathf.RoundToInt(RestaurantScore) * LuckcardManager.Instance.todayAffectingNum).ToString();
+        GameValueManager.Instance.IsMiniGameScore = Mathf.RoundToInt(RestaurantScore) * LuckcardManager.Instance.todayAffectingNum;
     }
 
     public void addScore(int argNum)
     {
-        RestaurantScore += argNum;
-    }
-
-    public void GetReaction(bool argBool)
-    {
-        StartCoroutine("ReactionActive", argBool);
+        if(RestaurantScore < 400)
+        {
+            RestaurantScore += argNum;
+        }
     }
 
     /// <summary>
-    /// 리액션 보이기
+    /// 왼쪽 위로 사라지는 리액션
     /// </summary>
-    /// <param name="argBool">리액션확인</param>
-    /// <returns></returns>
-    IEnumerator ReactionActive(bool argBool)
+    /// <param name="argBool">성공, 실패</param>
+    public void GetReaction(bool argBool)
     {
-        reaction.SetActive(true);
+        StartCoroutine("ReactionFade", argBool);
+    }
+
+    IEnumerator ReactionFade(bool argBool)
+    {
+        GameObject reaction = Instantiate(reactionPrefab, reactionPos);
         if (argBool)
         {
             reaction.GetComponent<Image>().sprite = reactionGood;
@@ -149,9 +136,8 @@ public class RestaurantManager : MonoBehaviour
         {
             reaction.GetComponent<Image>().sprite = reactionBad;
         }
-
-        yield return new WaitForSeconds(1.0f);
-        reaction.SetActive(false);
+        yield return new WaitForSeconds(2);
+        Destroy(reaction);
     }
 
     IEnumerator Timer()
@@ -164,41 +150,23 @@ public class RestaurantManager : MonoBehaviour
     void GenMouse()
     {
         genTime = Random.Range(0, 10f);
-        StartCoroutine("MouseLife");
-    }
-
-    IEnumerator MouseLife()
-    {
         int num = Random.Range(0, mouse.Length);
-        if (!mouseOpen[num])
-        {
-            mouse[num].SetActive(true);
-            mouseOpen[num] = true;
-            yield return new WaitForSeconds(6f);
-            if (mouseOpen[num])
-            {
-                mouseOpen[num] = false;
-                mouse[num].SetActive(false);
-                SoundManager.Instance.PlayEffectSound(badSE);
-                addScore(-10);
-                GetReaction(false);
-            }
-        }
-        yield return null;
+        mouse[num].gen();
+
     }
 
-    public void CatchRat(int ratCode)
+    public void CatchRat()
     {
-        if (mouseOpen[ratCode])
-        {
-            mouseOpen[ratCode] = false;
-            addScore(10);
-            goodNum++;
-            SoundManager.Instance.PlayEffectSound(goodSE);
-            GetReaction(true);
-            mouse[ratCode].SetActive(false);
-        }
-        return;
+        addScore(20);
+        SoundManager.Instance.PlayEffectSound(goodSE);
+        GetReaction(true);
+    }
+
+    public void MissRat()
+    {
+        addScore(-20);
+        SoundManager.Instance.PlayEffectSound(badSE);
+        GetReaction(false);
     }
 
     public void OptionOn(GameObject Option)

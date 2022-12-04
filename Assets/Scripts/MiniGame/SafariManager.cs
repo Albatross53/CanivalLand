@@ -10,7 +10,6 @@ public class SafariManager : MonoBehaviour
     float safariScore = 0;
     float time = 60.0f;
     float genTime = 2;
-    [HideInInspector] public int goodNum = 0;
 
     [SerializeField] GameObject[] animal;
     [SerializeField] Transform[] animalPos;
@@ -23,10 +22,13 @@ public class SafariManager : MonoBehaviour
 
     [Header("Result")]
     [SerializeField] GameObject Result;
-    [SerializeField] GameObject[] ResultScoreImage;
+    [SerializeField] Text scoreText;
+    [SerializeField] Text cardText;
+    [SerializeField] Text rewardText;
 
     [Header("Reaction")]
-    [SerializeField] GameObject reaction;
+    [SerializeField] GameObject reactionPrefab;
+    [SerializeField] Transform reactionPos;
     [SerializeField] Sprite reactionGood;
     [SerializeField] Sprite reactionBad;
     [SerializeField] Image reactionBar;
@@ -54,16 +56,15 @@ public class SafariManager : MonoBehaviour
         SoundManager.Instance.PlayBackSound(safariBack);
 
         SceneController.Instance.FindObj();
-        goodNum = 0;
         GameStartPanel.SetActive(true);
-        reaction.SetActive(false);
+        Result.SetActive(false);
         StartCoroutine("GameStart");
     }
 
     private void Update()
     {
         timerText.text = time.ToString("00");
-        reactionBar.fillAmount = safariScore / 300;
+        reactionBar.fillAmount = safariScore / 400;
 
         if (0 >= time)
         {
@@ -71,12 +72,6 @@ public class SafariManager : MonoBehaviour
             GetResult();
         }
 
-        /*
-        if (safariScore >= 100)
-        {
-            OptionOn(Result);
-        }
-        */
     }
 
     IEnumerator GameStart()
@@ -96,31 +91,20 @@ public class SafariManager : MonoBehaviour
 
     void GetResult()
     {
-        goodText.text = "X " + goodNum.ToString();
-        if (safariScore <= 50)
-        {
-            ResultScoreImage[0].SetActive(false);
-            ResultScoreImage[1].SetActive(false);
-            ResultScoreImage[2].SetActive(false);
-        }
-        else if (safariScore <= 100)
-        {
-            ResultScoreImage[1].SetActive(false);
-            ResultScoreImage[2].SetActive(false);
-        }
-        else if (safariScore <= 200)
-        {
-            ResultScoreImage[2].SetActive(false);
-        }
-        else
-        {
-            return;
-        }
+        scoreText.text = "점수: " + Mathf.RoundToInt(safariScore).ToString();
+        cardText.text = "카드 영향 : x" +
+            LuckcardManager.Instance.todayAffectingNum.ToString();
+        rewardText.text = "획득골드 : " +
+            (Mathf.RoundToInt(safariScore) * LuckcardManager.Instance.todayAffectingNum).ToString();
+        GameValueManager.Instance.IsMiniGameScore = Mathf.RoundToInt(safariScore) * LuckcardManager.Instance.todayAffectingNum;
     }
 
     public void addScore(int argNum)
     {
-        safariScore += argNum;
+        if(safariScore < 400)
+        {
+            safariScore += argNum;
+        }
     }
 
     IEnumerator Timer()
@@ -130,20 +114,18 @@ public class SafariManager : MonoBehaviour
         StartCoroutine("Timer");
     }
 
+    /// <summary>
+    /// 왼쪽 위로 사라지는 리액션
+    /// </summary>
+    /// <param name="argBool">성공, 실패</param>
     public void GetReaction(bool argBool)
     {
-        StartCoroutine("ReactionActive", argBool);
+        StartCoroutine("ReactionFade", argBool);
     }
 
-    /// <summary>
-    /// 리액션 보이기
-    /// </summary>
-    /// <param name="argBool">리액션확인</param>
-    /// <returns></returns>
-    IEnumerator ReactionActive(bool argBool)
+    IEnumerator ReactionFade(bool argBool)
     {
-        reaction.SetActive(true);
-        
+        GameObject reaction = Instantiate(reactionPrefab, reactionPos);
         if (argBool)
         {
             reaction.GetComponent<Image>().sprite = reactionGood;
@@ -152,9 +134,8 @@ public class SafariManager : MonoBehaviour
         {
             reaction.GetComponent<Image>().sprite = reactionBad;
         }
-
-        yield return new WaitForSeconds(1.0f);
-        reaction.SetActive(false);
+        yield return new WaitForSeconds(2);
+        Destroy(reaction);
     }
 
     void GenAnimal()

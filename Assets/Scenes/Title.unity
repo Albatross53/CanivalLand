@@ -1722,6 +1722,56 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &704746767
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 704746769}
+  - component: {fileID: 704746768}
+  m_Layer: 0
+  m_Name: EvidenceManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &704746768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704746767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ac5743f39da8d419b7d32357a3c80f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EvidenceDatas:
+  - {fileID: 11400000, guid: 3628f8e623c1e1c4ba840063bdb741ce, type: 2}
+  - {fileID: 11400000, guid: c4236b4822b4fe94bb75c33dcd20e723, type: 2}
+  - {fileID: 11400000, guid: 48ac0afae0a064d479ef37a4bce57b6d, type: 2}
+  - {fileID: 11400000, guid: c2a84dcccc4c68444951645770a4380b, type: 2}
+  - {fileID: 11400000, guid: 309f9775bb08ec34f974da9e2252400d, type: 2}
+  CurEvidenceNum: 0
+--- !u!4 &704746769
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704746767}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &756560781
 GameObject:
   m_ObjectHideFlags: 0
@@ -3614,6 +3664,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3ba79daebcfbeda409f39b72d4d7a1f5, type: 2}
   todayCardNum: 0
   todayCardSprite: {fileID: 0}
+  todayAffectingNum: 0
 --- !u!4 &1543798492
 Transform:
   m_ObjectHideFlags: 0
@@ -4769,11 +4820,15 @@ MonoBehaviour:
   m_NpcQuestIsStart: 0000000000000000000000000000
   m_NpcQuestIsClear: 0000000000000000000000000000
   m_NpcQuestCurNum: 0
+  m_CurEvidenceNum: 0
+  m_GuideMode: 1
+  filePath: 
   fileName:
   - 0
   - 1
   - 2
   fileSlotNum: 0
+  verion: 1.6.5
 --- !u!4 &1981785199
 Transform:
   m_ObjectHideFlags: 0

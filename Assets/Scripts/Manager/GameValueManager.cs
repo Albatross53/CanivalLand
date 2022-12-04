@@ -69,6 +69,16 @@ public class GameValueManager : MonoBehaviour
         }
     }
 
+    int miniGameScore;
+    public int IsMiniGameScore
+    {
+        get { return miniGameScore; }
+        set
+        {
+            miniGameScore = value;
+        }
+    }
+
     /// <summary>
     /// ¼¿ÇÁ ±Û·Î¹úÈ­
     /// </summary>

@@ -19,6 +19,8 @@ public class LuckcardManager : MonoBehaviour
     /// </summary>
     public Sprite todayCardSprite;
 
+    public int todayAffectingNum = 0;
+
     /// <summary>
     /// ±Û·Î¹úÈ­
     /// </summary>
@@ -43,10 +45,9 @@ public class LuckcardManager : MonoBehaviour
     /// </summary>
     public void RandomLuckacard()
     {
-        //todayCardNum = Random.Range(0, m_luckCardDatas.Length);
-        todayCardNum = 0;
+        todayCardNum = Random.Range(0, 2);
         todayCardSprite = m_luckCardDatas[todayCardNum].CardSprite;
-        //m_luckCardOpens[todayCardNum] = true;
+        todayAffectingNum = m_luckCardDatas[todayCardNum].ScoreAffecting;
     }
 
     public static LuckcardManager Instance

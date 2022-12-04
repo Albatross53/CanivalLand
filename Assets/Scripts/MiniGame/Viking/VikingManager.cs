@@ -8,9 +8,8 @@ public class VikingManager : MonoBehaviour
     [SerializeField] AudioClip vikingBack;
 
     [SerializeField] int attractionsCode;
-    float reactionScore = 0;
+    float VikingScore = 0;
     float curTime = 60;
-    [HideInInspector] public int goodNum = 0;
 
     [Header("UI")]
     [SerializeField] Text goodText;
@@ -23,15 +22,18 @@ public class VikingManager : MonoBehaviour
     [SerializeField] Sprite vikingBtnOn;
     [SerializeField] Sprite vikingBtnOff;
 
+    [Header("Result")]
+    [SerializeField] GameObject Result;
+    [SerializeField] Text scoreText;
+    [SerializeField] Text cardText;
+    [SerializeField] Text rewardText;
+
     [Header("Reaction")]
-    [SerializeField] GameObject reaction;
+    [SerializeField] GameObject reactionPrefab;
+    [SerializeField] Transform reactionPos;
     [SerializeField] Sprite reactionGood;
     [SerializeField] Sprite reactionBad;
     [SerializeField] Image reactionBar;
-
-    [Header("Result")]
-    [SerializeField] GameObject Result;
-    [SerializeField] GameObject[] ResultScoreImage;
 
     static VikingManager g_vikingManager;
 
@@ -51,16 +53,15 @@ public class VikingManager : MonoBehaviour
         SoundManager.Instance.PlayBackSound(vikingBack);
 
         SceneController.Instance.FindObj();
-        goodNum = 0;
         GameStartPanel.SetActive(true);
-        reaction.SetActive(false);
+        Result.SetActive(false);
         StartCoroutine("GameStart");
     }
 
     private void Update()
     {
         timeText.text = curTime.ToString("00");
-        reactionBar.fillAmount = reactionScore / 300;
+        reactionBar.fillAmount = VikingScore / 400;
 
         //timeover
         if(curTime <= 0)
@@ -98,26 +99,12 @@ public class VikingManager : MonoBehaviour
 
     void GetResult()
     {
-        goodText.text = "X " + goodNum.ToString();
-        if (reactionScore <= 50)
-        {
-            ResultScoreImage[0].SetActive(false);
-            ResultScoreImage[1].SetActive(false);
-            ResultScoreImage[2].SetActive(false);
-        }
-        else if (reactionScore <= 100)
-        {
-            ResultScoreImage[1].SetActive(false);
-            ResultScoreImage[2].SetActive(false);
-        }
-        else if (reactionScore <= 200)
-        {
-            ResultScoreImage[2].SetActive(false);
-        }
-        else
-        {
-            return;
-        }
+        scoreText.text = "점수: " + Mathf.RoundToInt(VikingScore).ToString();
+        cardText.text = "카드 영향 : x" +
+            LuckcardManager.Instance.todayAffectingNum.ToString();
+        rewardText.text = "획득골드 : " +
+            (Mathf.RoundToInt(VikingScore) * LuckcardManager.Instance.todayAffectingNum).ToString();
+        GameValueManager.Instance.IsMiniGameScore = Mathf.RoundToInt(VikingScore) * LuckcardManager.Instance.todayAffectingNum;
     }
 
     public void BtnActive(bool argBool)
@@ -139,22 +126,24 @@ public class VikingManager : MonoBehaviour
     /// </summary>
     public void AddScore(int argNum)
     {
-        reactionScore += argNum;
-    }
-
-    public void GetReaction(bool argBool)
-    {
-        StartCoroutine("ReactionActive", argBool);
+        if(VikingScore < 400)
+        {
+            VikingScore += argNum;
+        }
     }
 
     /// <summary>
-    /// 리액션 보이기
+    /// 왼쪽 위로 사라지는 리액션
     /// </summary>
-    /// <param name="argBool">리액션확인</param>
-    /// <returns></returns>
-    IEnumerator ReactionActive(bool argBool)
+    /// <param name="argBool">성공, 실패</param>
+    public void GetReaction(bool argBool)
     {
-        reaction.SetActive(true);
+        StartCoroutine("ReactionFade", argBool);
+    }
+
+    IEnumerator ReactionFade(bool argBool)
+    {
+        GameObject reaction = Instantiate(reactionPrefab, reactionPos);
         if (argBool)
         {
             reaction.GetComponent<Image>().sprite = reactionGood;
@@ -163,9 +152,8 @@ public class VikingManager : MonoBehaviour
         {
             reaction.GetComponent<Image>().sprite = reactionBad;
         }
-
-        yield return new WaitForSeconds(2.0f);
-        reaction.SetActive(false);
+        yield return new WaitForSeconds(2);
+        Destroy(reaction);
     }
 
     public void OptionOn(GameObject Option)

@@ -11,7 +11,6 @@ public class RollerCoasterManager : MonoBehaviour
 
     [SerializeField] int attractionsCode;
     [SerializeField] float time = 60.0f;
-    [HideInInspector] public int goodNum = 0;
 
     /// <summary>
     /// 대기자 오브젝트
@@ -45,17 +44,19 @@ public class RollerCoasterManager : MonoBehaviour
     [SerializeField] GameObject outObj;
 
     [Header("UI")]
-    [SerializeField] Text goodText;
     [SerializeField] Text TimeText;
     [SerializeField] GameObject GameStartPanel;
     [SerializeField] Text GameStartText;
 
     [Header("Result")]
     [SerializeField] GameObject Result;
-    [SerializeField] GameObject[] ResultScoreImage;
+    [SerializeField] Text scoreText;
+    [SerializeField] Text cardText;
+    [SerializeField] Text rewardText;
 
     [Header("Reaction")]
-    [SerializeField] GameObject reaction;
+    [SerializeField] GameObject reactionPrefab;
+    [SerializeField] Transform reactionPos;
     [SerializeField] Sprite reactionGood;
     [SerializeField] Sprite reactionBad;
     [SerializeField] Image reactionBar;
@@ -67,9 +68,8 @@ public class RollerCoasterManager : MonoBehaviour
         SoundManager.Instance.PlayBackSound(rollerCoasterBack);
 
         SceneController.Instance.FindObj();
-        goodNum = 0;
         GameStartPanel.SetActive(true);
-        reaction.SetActive(false);
+        Result.SetActive(false);
         StartCoroutine("GameStart");
     }
 
@@ -77,7 +77,7 @@ public class RollerCoasterManager : MonoBehaviour
     void Update()
     {
         TimeText.text = time.ToString("00");
-        reactionBar.fillAmount = rollerCoasterScore / 300;
+        reactionBar.fillAmount = rollerCoasterScore / 400;
 
         if (0 >= time)
         {
@@ -94,8 +94,7 @@ public class RollerCoasterManager : MonoBehaviour
         if(waitQueue.Peek() == 2 || waitQueue.Peek() == 3)
         {
             StartCoroutine("RideAni");
-            goodNum++;
-            AddScore(10);
+            AddScore(20);
             SoundManager.Instance.PlayEffectSound(goodSE);
             GetReaction(true);
             waitQueue.Dequeue();
@@ -106,7 +105,7 @@ public class RollerCoasterManager : MonoBehaviour
         else
         {
             StartCoroutine("RideAni");
-            AddScore(-10);
+            AddScore(-20);
             SoundManager.Instance.PlayEffectSound(badSE);
             GetReaction(false);
             waitQueue.Dequeue();
@@ -137,22 +136,24 @@ public class RollerCoasterManager : MonoBehaviour
     /// </summary>
     public void AddScore(int argNum)
     {
-        rollerCoasterScore += argNum;
-    }
-
-    public void GetReaction(bool argBool)
-    {
-        StartCoroutine("ReactionActive", argBool);
+        if(rollerCoasterScore < 400)
+        {
+            rollerCoasterScore += argNum;
+        }
     }
 
     /// <summary>
-    /// 리액션 보이기
+    /// 왼쪽 위로 사라지는 리액션
     /// </summary>
-    /// <param name="argBool">리액션확인</param>
-    /// <returns></returns>
-    IEnumerator ReactionActive(bool argBool)
+    /// <param name="argBool">성공, 실패</param>
+    public void GetReaction(bool argBool)
     {
-        reaction.SetActive(true);
+        StartCoroutine("ReactionFade", argBool);
+    }
+
+    IEnumerator ReactionFade(bool argBool)
+    {
+        GameObject reaction = Instantiate(reactionPrefab, reactionPos);
         if (argBool)
         {
             reaction.GetComponent<Image>().sprite = reactionGood;
@@ -161,9 +162,8 @@ public class RollerCoasterManager : MonoBehaviour
         {
             reaction.GetComponent<Image>().sprite = reactionBad;
         }
-
-        yield return new WaitForSeconds(1.0f);
-        reaction.SetActive(false);
+        yield return new WaitForSeconds(2);
+        Destroy(reaction);
     }
 
     public void GetOutBtn()
@@ -213,7 +213,7 @@ public class RollerCoasterManager : MonoBehaviour
 
     void WaitGen()
     {
-        int ranNum = Random.Range(0, 3);
+        int ranNum = Random.Range(0, 5);
         waitQueue.Enqueue(ranNum);
         waitList.Add(ranNum);   
     }
@@ -293,25 +293,11 @@ public class RollerCoasterManager : MonoBehaviour
 
     void GetResult()
     {
-        goodText.text = "X " + goodNum.ToString();
-        if (rollerCoasterScore <= 50)
-        {
-            ResultScoreImage[0].SetActive(false);
-            ResultScoreImage[1].SetActive(false);
-            ResultScoreImage[2].SetActive(false);
-        }
-        else if (rollerCoasterScore <= 100)
-        {
-            ResultScoreImage[1].SetActive(false);
-            ResultScoreImage[2].SetActive(false);
-        }
-        else if (rollerCoasterScore <= 200)
-        {
-            ResultScoreImage[2].SetActive(false);
-        }
-        else
-        {
-            return;
-        }
+        scoreText.text = "점수: " + Mathf.RoundToInt(rollerCoasterScore).ToString();
+        cardText.text = "카드 영향 : x" +
+            LuckcardManager.Instance.todayAffectingNum.ToString();
+        rewardText.text = "획득골드 : " +
+            (Mathf.RoundToInt(rollerCoasterScore) * LuckcardManager.Instance.todayAffectingNum).ToString();
+        GameValueManager.Instance.IsMiniGameScore = Mathf.RoundToInt(rollerCoasterScore) * LuckcardManager.Instance.todayAffectingNum;
     }
 }

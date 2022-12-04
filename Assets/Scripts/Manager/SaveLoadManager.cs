@@ -21,22 +21,26 @@ public class SaveLoadManager : MonoBehaviour
     public List<bool> m_NpcQuestIsStart = new List<bool>();
     public List<bool> m_NpcQuestIsClear = new List<bool>();
     public int m_NpcQuestCurNum = 0;
+    public int m_CurEvidenceNum = 0;
+    public bool m_GuideMode = true;
 
     PlayerData _playerData;
 
-    string filePath;
+    public string filePath;
     string resetPath;
 
     public List<string> fileName;
 
     public int fileSlotNum;
 
+    [SerializeField] string verion;
+
     static SaveLoadManager g_saveLoadManager;
 
     private void Awake()
     {
-        filePath = Application.persistentDataPath + "/PlayerData";
-        resetPath = Application.persistentDataPath + "/PlayerData_ResetData";
+        filePath = Application.persistentDataPath + "/PlayerData_" + verion;
+        resetPath = Application.persistentDataPath + "/PlayerData_ResetData_" + verion;
 
         if (Instance == null)
         {
@@ -96,7 +100,9 @@ public class SaveLoadManager : MonoBehaviour
         m_NpcQuestIsStart = new List<bool>(_playerData.NpcQuestIsStart);
         m_NpcQuestIsClear = new List<bool>(_playerData.NpcQuestIsClear);
         m_NpcQuestCurNum = _playerData.npcQuestCurNum;
-    }
+        m_CurEvidenceNum = _playerData.curEvidenceNum;
+        m_GuideMode = _playerData.guideMode;
+}
 
     /// <summary>
     /// 저장데이터 리셋
@@ -122,6 +128,8 @@ public class SaveLoadManager : MonoBehaviour
         m_NpcQuestIsStart = new List<bool>(_playerData.NpcQuestIsStart);
         m_NpcQuestIsClear = new List<bool>(_playerData.NpcQuestIsClear);
         m_NpcQuestCurNum = _playerData.npcQuestCurNum;
+        m_CurEvidenceNum = _playerData.curEvidenceNum;
+        m_GuideMode = _playerData.guideMode;
     }
 
     /// <summary>
@@ -132,7 +140,9 @@ public class SaveLoadManager : MonoBehaviour
         _playerData = new PlayerData(m_IsFirst, m_PlayerName, m_Reputation, 
             m_Date, m_Gold, m_Debt, m_NpcQuestNum, m_ParkReputation,
             m_AttractionPreferenceList,
-            m_NpcFriendshipList, m_NpcfirstTalkList, m_NpcQuestIsStart, m_NpcQuestIsClear, m_NpcQuestCurNum);
+            m_NpcFriendshipList, m_NpcfirstTalkList, m_NpcQuestIsStart, 
+            m_NpcQuestIsClear, m_NpcQuestCurNum,
+            m_CurEvidenceNum, m_GuideMode);
         string jdata = JsonUtility.ToJson(_playerData);
         File.WriteAllText(argPath, jdata);
         Load(argPath);
@@ -162,12 +172,14 @@ public class PlayerData
     public List<bool> NpcQuestIsStart = new List<bool>();
     public List<bool> NpcQuestIsClear = new List<bool>();
     public int npcQuestCurNum;
+    public int curEvidenceNum;
+    public bool guideMode;
 
     public PlayerData(bool isFirst, string playerName, float reputation, 
         int date, int gold, int debt, int npcQuestNum, float parkReputation, 
-        List<float> attractionPreferenceList, 
-        List<float> npcFriendshipList, List<bool> npcfirstTalkList, List<bool> npcQuestIsStart, 
-        List<bool> npcQuestIsClear, int npcQuestCurNum)
+        List<float> attractionPreferenceList, List<float> npcFriendshipList, 
+        List<bool> npcfirstTalkList, List<bool> npcQuestIsStart, 
+        List<bool> npcQuestIsClear, int npcQuestCurNum, int curEvidenceNum, bool guideMode)
     {
         this.isFirst = isFirst;
         this.playerName = playerName ?? throw new ArgumentNullException(nameof(playerName));
@@ -183,6 +195,8 @@ public class PlayerData
         NpcQuestIsStart = npcQuestIsStart ?? throw new ArgumentNullException(nameof(npcQuestIsStart));
         NpcQuestIsClear = npcQuestIsClear ?? throw new ArgumentNullException(nameof(npcQuestIsClear));
         this.npcQuestCurNum = npcQuestCurNum;
+        this.curEvidenceNum = curEvidenceNum;
+        this.guideMode = guideMode;
     }
 }
 

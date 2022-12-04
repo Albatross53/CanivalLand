@@ -97,17 +97,27 @@ public class UIManager : MonoBehaviour
     [SerializeField] Slider ParkPreferenceSlider;
     [SerializeField] Text ParkPreferenceText;
 
+    [Header("Evidence")]
+    [SerializeField] Text evidenceDisText;
+    [SerializeField] Image[] evidenceIcons;
+    [SerializeField] Button[] evidenceBtn;
+
     [Header("Event")]
     /// <summary>
     /// 이벤트 아이템 이미지
     /// </summary>
     [SerializeField] Sprite trash, lostObj, lostKid;
+
+    [SerializeField] Sprite zombi;
     /// <summary>
     /// 줍기용 머리 오브젝트
     /// </summary>
     [SerializeField] Image g_PickUp;
 
     public bool night = false;
+
+    [SerializeField] Transform textPos;
+    [SerializeField] Text fadeText;
 
     static UIManager g_UIManager;
 
@@ -203,7 +213,33 @@ public class UIManager : MonoBehaviour
         g_PickUp.gameObject.SetActive(false);
         QuestManager.Instance.QuestCheck(PlayerController.Instance.m_PickCode + 6);
         QuestManager.Instance.NpcQuestCheck(2, 1);
-        GameValueManager.Instance.IsGold += (10 * LuckcardManager.Instance.m_luckCardDatas[LuckcardManager.Instance.todayCardNum].ScoreAffecting);
+    }
+
+    /// <summary>
+    /// 운카드 이벤트 내려놓기
+    /// </summary>
+    public void PickDown_Luck()
+    {
+        PlayerController.Instance.isEvent = false;
+        g_PickUp.gameObject.SetActive(false);
+        GameValueManager.Instance.IsGold += 50;
+        FadeText("좀비 보상금으로 50골드 획득");
+
+        StartCoroutine("rateLuck");
+    }
+
+    IEnumerator rateLuck()
+    {
+        yield return new WaitForSeconds(2f);
+        int num = Random.Range(0, 5);
+        if (num == 1)
+        {
+            if(EvidenceManager.Instance.CurEvidenceNum < 5)
+            {
+                EvidenceManager.Instance.CurEvidenceNum++;
+                FadeText("단서를 발견했습니다");
+            }
+        }
     }
 
     /// <summary>
@@ -225,6 +261,9 @@ public class UIManager : MonoBehaviour
                 break;
             case 2:
                 g_PickUp.GetComponent<Image>().sprite = trash;
+                break;
+            case 3:
+                g_PickUp.GetComponent<Image>().sprite = zombi;
                 break;
         }
     }
@@ -324,7 +363,20 @@ public class UIManager : MonoBehaviour
         else if (argNum == 6) // 게임설정
         {
             ADManager.Instance.AdLoad();
+        }else if(argNum == 7) //단서
+        {
+            evidenceDisText.text = "단서를 모아 클릭해보세요.";
+            for(int i = 0; i < EvidenceManager.Instance.CurEvidenceNum; i++)
+            {
+                evidenceBtn[i].interactable= true;
+                evidenceIcons[i].gameObject.SetActive(true);
+            }
         }
+    }
+
+    public void EvidenceDis(int argNum)
+    {
+        evidenceDisText.text = EvidenceManager.Instance.m_EvidenceDatas[argNum].EvidenceDisc;
     }
 
     public void disOption()
@@ -372,6 +424,24 @@ public class UIManager : MonoBehaviour
             m_NpcQuestDisText.text = "null";
             m_NpcQuestIsText.text = "null";
         }
+    }
+
+    /// <summary>
+    /// 왼쪽 위로 사라지는 텍스트
+    /// </summary>
+    /// <param name="argText">입력할 내용</param>
+    public void FadeText(string argText)
+    {
+        StartCoroutine("TextFade", argText);
+    }
+
+    IEnumerator TextFade(string argText)
+    {
+        Text ft = Instantiate(fadeText, textPos);
+        ft.text = argText;
+
+        yield return new WaitForSeconds(2.5f);
+        Destroy(ft.gameObject);
     }
 
     /// <summary>
