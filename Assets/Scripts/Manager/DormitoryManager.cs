@@ -83,6 +83,7 @@ public class DormitoryManager : MonoBehaviour
 
         GameValueManager.Instance.IsDebt -= GameValueManager.Instance.IsGold;
         QuestManager.Instance.NpcQuestCheck(1, GameValueManager.Instance.IsGold);
+        QuestManager.Instance.QuestSave();
 
         GameValueManager.Instance.IsGold = 0;
         m_Gold.text = "¼ÒÁö±Ý: " + GameValueManager.Instance.IsGold + "G";

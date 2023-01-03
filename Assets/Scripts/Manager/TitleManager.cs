@@ -21,8 +21,6 @@ public class TitleManager : MonoBehaviour
 
     private void Awake()
     {
-        filePath = Application.persistentDataPath + "/PlayerData";
-
         if (Instance == null)
         {
             g_TitleManager = this;
@@ -35,6 +33,8 @@ public class TitleManager : MonoBehaviour
 
     private void Start()
     {
+        filePath = SaveLoadManager.Instance.filePath;
+
         SoundManager.Instance.PlayBackSound(titleBack);
         titleImage.transform.DOScale(Vector3.one * 1.3f, 2f).SetLoops(-1, LoopType.Yoyo);
     }

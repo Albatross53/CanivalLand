@@ -4828,7 +4828,7 @@ MonoBehaviour:
   - 1
   - 2
   fileSlotNum: 0
-  verion: 1.6.5
+  verion: 1.6.6
 --- !u!4 &1981785199
 Transform:
   m_ObjectHideFlags: 0
